@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fuck You In Particular</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f0f0f0;
+      }
+
+      #container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+        margin-top: 50px;
+      }
+
+      .btn {
+        padding: 1rem 1rem;
+        margin-top: 1.5rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #upload {
+        background-color: #ff9800;
+      }
+
+      #download {
+        background-color: #4caf50;
+        display: none;
+      }
+
+      input {
+        visibility: hidden;
+      }
+
+      img {
+        position: absolute;
+        height: 5rem;
+        width: auto;
+        margin-bottom: 30rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Fuck You In Particular</h1>
+    <div id="container">
+      <object data="assets/skeleton-middle-finger.svg" type="image/svg+xml"></object>
+        
+    </div>
+    <button id="upload" class="btn">Upload Photo</button>
+    <button id="download" class="btn">Download Photo</button>
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script>
+    const uploadBtn = document.getElementById('upload');
+    const downloadBtn = document.getElementById('download');
+    const container = document.getElementById('container');
+    
+    let uploadImage;
+
+    uploadBtn.addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/png';
+      input.addEventListener('change', () => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = document.createElement('img');
+          img.src = reader.result;
+          container.appendChild(img);
+          uploadBtn.style.display = 'none';
+          downloadBtn.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+      });
+      input.click();
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      html2canvas(container, {
+        foreignObjectRendering: true
+      }).then(canvas => {
+        const img = new Image();
+        img.src = canvas.toDataUrl();
+
+        const link = document.createElement('a');
+        link.download = 'f-you.png';
+        link.href = img.src;
+        link.click();
+      });
+    });
+
+
+
+  </script>
+  </body>
+</html>
